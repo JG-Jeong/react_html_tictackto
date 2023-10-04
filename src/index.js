@@ -4,15 +4,31 @@ import "./index.css";
 
 //자습서에 복붙하지말고 하나씩 치라고 해서 하나씩 침
 class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+
   // ??? 여기에서 render를 쓰는 이유가 react가 가상DOM에서 실제DOM업데이트 하라는 뜻?? 그럼 컴포넌트의 상태 or 속성이 변경 되면 render method로 반환된 요소를 기반으로 DOM업뎃?
   render() {
-    return <button className="square">{/* TODO */}</button>;
+    return (
+      <button
+        className="square"
+        onClick={() => {
+          console.log("click");
+        }}
+      >
+        {this.props.value}
+      </button>
+    );
   }
 }
 
 class Board extends React.Component {
   renderSquare(i) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   render() {

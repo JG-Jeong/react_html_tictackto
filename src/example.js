@@ -17,3 +17,11 @@ class ShoppingList extends React.Component {
     );
   }
 }
+
+// 위에 내용은 아래와 같이 변화함. 이거 flutter에서 본 형식이랑 비슷한데?
+// children을 써서 아래 놈을 정리하네.
+// html은 띄어쓰기로 구별하는데
+//     React.createElement('div', {className: 'shopping-list',
+//       children: React.createElement('h1', {
+//         children: ['Shopping List for', props.name]
+//       }), ('ul', {children: ['']})})

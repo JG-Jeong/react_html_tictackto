@@ -1,5 +1,6 @@
+import ReactDOM from "react-dom/client";
 import React from "react";
-import { ReactDOM } from "react";
+import "./index.css";
 
 function Square(props) {
   return (
@@ -51,12 +52,13 @@ class Game extends React.Component {
           squares: Array(9).fill(null),
         },
       ],
+      stepNumber: 0,
       xIsNext: true,
     };
   }
 
   handleClick(i) {
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
@@ -69,19 +71,27 @@ class Game extends React.Component {
           squares: squares,
         },
       ]),
+      stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+    });
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: step % 2 === 0,
     });
   }
 
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ? "Go to move #" + move : "Go to game start";
       return (
-        <li>
+        <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
@@ -135,3 +145,16 @@ function calculateWinner(squares) {
   }
   return null;
 }
+// =========================================
+// 예를들어서 <li> Alexa : 7 tasks left </li>
+//         <li> Ben : 5 tasks left</li>
+
+//         라는 state에서
+
+//         <li> Ben: 9 tasks left </li>
+//         <li> Clausdia : 8 tasks left </li>
+//         <li> Alexa : 5 tasks left </li>
+//         라고 바뀌면 Alexa와 Ben의 위치도 바뀌었고 가운데 Claudia도 들어가고 task의 갯수도 바뀜. 그런데 컴퓨터는 이런걸 몰라!
+//         그래서 얘한테 key prop을 지정하여 각각 뭐가 뭔지 알게 해줘야해
+
+//         <li key={user.id}여기서는 사람 이름으로 구별>{user.name}: {user.taskCount} tasks left</li> 라고 나타남.
